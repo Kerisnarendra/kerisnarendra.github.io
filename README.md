@@ -1,14 +1,11 @@
 I am a software engineer, currently based at Bali. My software development interests includes web and mobile development. I graduated in 2006 from ITS (https://www.its.ac.id/) holding BE in Computer.
 
 ### Web Projects
-* [Pertamina LPG Scanner]https://imgur.com/m5Gfdov): Freelance Project, 2019 
-* [Meratus Online System]https://imgur.com/m5Gfdov): MERATUSLINE, 2019 
+* [Pertamina LPG Scanner](https://i.imgur.com/j8PZsUt.png): Freelance Project, 2019 
+* [Meratus Online System](https://i.imgur.com/GmGDQsi.png): MERATUSLINE, 2019 
 
 ### Mobile Apps
-* [Pertamina LPG Scanner](https://imgur.com/sLeuuKr): Freelance Project, 2019 
-
-Desktop Projects:
-
+* [Pertamina LPG Scanner](https://i.imgur.com/sLeuuKr.png): Freelance Project, 2019 
 
 ### Work Places (Australia)
 * [ONIQUA](https://www.linkedin.com/company/oniqua/): Brisbane, 2008
