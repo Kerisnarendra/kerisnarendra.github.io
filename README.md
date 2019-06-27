@@ -3,9 +3,14 @@ I am a software engineer, currently based at Bali. My software development inter
 ### Web Projects
 * [Pertamina LPG Scanner](https://i.imgur.com/j8PZsUt.png): Freelance Project, 2019 
 * [Meratus Online System](https://i.imgur.com/GmGDQsi.png): MERATUSLINE, 2019 
+* [DPEX Online System]: [DPEX Singapore](https://dpex.com/) , 2018
+* [AIRA Corporate Calendar]: [AIRA Australia](https://www.aira.org.au/) , 2018 
 
 ### Mobile Apps
 * [Pertamina LPG Scanner](https://i.imgur.com/sLeuuKr.png): Freelance Project, 2019 
+
+### Others
+* [Urban Cycling](https://www.instagram.com/p/BZwwv93B7xI/): Mitrais Innovathon Project - 2nd Winner, 2017 
 
 ### Work Places (Australia)
 * [ONIQUA](https://www.linkedin.com/company/oniqua/): Brisbane, 2008
