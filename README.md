@@ -54,7 +54,7 @@ certification.
     -   Reverse Proxy and OSRM (Open Source Routing Machine) Setup.
     -   Roles: 100% Operation engineer/installer.
     -   Technologies:
-        -   [OSRM](http://project-osrm.org/), NGINX, AWS EC2, CURL and
+        -   [OSRM](http://project-osrm.org/), Docker, NGINX, AWS EC2, CURL and
             Linux bash commands.
 -   DPEX Online System: [DPEX](https://dpex.com), 2018
     -   Requirements elicitation and elaboration, and application
