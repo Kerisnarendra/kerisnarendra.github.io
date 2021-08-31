@@ -8,8 +8,7 @@ I work as software engineer since 2005 and hold [Professional Scrum
 Developer I (PSD I)](https://www.scrum.org/certificates/485554)
 certification.
 
-### Projects
-
+### Projects        
 -   [EEMS](https://dev.eems-cac.me.uk/): [CAC
     Corporation](https://www.cac.co.jp/english/), 2020
     -   A multi tenant event management web application.
@@ -172,7 +171,7 @@ certification.
 -   [ONIQUA](https://www.linkedin.com/company/oniqua/): Brisbane, 2008
 -   [INCO](http://www.vale.com/indonesia/EN/Pages/default.aspx):
     Sorowako, 2008
--   [Mitrais](https://www.mitrais.com/): Bali, 2006 - 2020
+-   [Mitrais](https://www.mitrais.com/): Bali, 2006 - 2021
 
 ### Online Activities
 
@@ -183,8 +182,8 @@ certification.
 
 ### Resume
 
-Request resume via [email](mailto:kakerisn@gmail.com)
+Request resume via [email](mailto:kerisnarendra.komang@gmail.com)
 
 ### Contact
 
-Email Address: [kakerisn@gmail.com](mailto:kakerisn@gmail.com)
+Email Address: [kerisnarendra.komang@gmail.com](mailto:kerisnarendra.komang@gmail.com)
