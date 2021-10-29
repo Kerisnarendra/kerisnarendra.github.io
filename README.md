@@ -9,7 +9,7 @@ Developer I (PSD I)](https://www.scrum.org/certificates/485554)
 certification.
 
 ### Projects  
--   [Prognosis Cloud(https://www.ir.com/products/platform/prognosis): [Integrated Research Limited](https://www.ir.com/), Current
+-   [Prognosis Cloud](https://www.ir.com/products/platform/prognosis): [Integrated Research Limited](https://www.ir.com/), Current
     -   A multi tenant cloud based unified commuinications monitoring and collaboration solutions.
     -   Roles: 100% backend engineers, 2% frontend engineer.
     -   Technologies:
