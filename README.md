@@ -8,7 +8,17 @@ I work as software engineer since 2005 and hold [Professional Scrum
 Developer I (PSD I)](https://www.scrum.org/certificates/485554)
 certification.
 
-### Projects        
+### Projects  
+-   [Prognosis Cloud(https://www.ir.com/products/platform/prognosis): [Integrated Research Limited](https://www.ir.com/), Current
+    -   A multi tenant cloud based unified commuinications monitoring and collaboration solutions.
+    -   Roles: 100% backend engineers, 2% frontend engineer.
+    -   Technologies:
+        -   Backend: NodeJS, TypeScript, AWS (AWS Lambda, SNS, SQS, Step Functions, DynamoDB),
+            [Mocha](https://mochajs.org/),
+            [Chai](https://www.chaijs.com/),
+            [Sinon](https://sinonjs.org/), supertest, faker and
+            istanbul.
+        -   Frontend: HTML, CSS, ReactJS, Redux, Jest, TypeScript.
 -   [EEMS](https://dev.eems-cac.me.uk/): [CAC
     Corporation](https://www.cac.co.jp/english/), 2020
     -   A multi tenant event management web application.
