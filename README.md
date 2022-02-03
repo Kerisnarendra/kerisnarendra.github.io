@@ -10,15 +10,18 @@ certification.
 
 ### Projects  
 -   [Prognosis Cloud](https://www.ir.com/products/platform/prognosis): [Integrated Research Limited](https://www.ir.com/), Current
-    -   A multi tenant cloud based unified commuinications monitoring and collaboration solutions.
+    -   A multi tenant cloud based unified communications monitoring and collaboration solutions.
     -   Roles: 100% backend engineers, 2% frontend engineer.
     -   Technologies:
         -   Backend: NodeJS, TypeScript, AWS (AWS Lambda, SNS, SQS, Step Functions, DynamoDB),
             [Mocha](https://mochajs.org/),
             [Chai](https://www.chaijs.com/),
             [Sinon](https://sinonjs.org/), supertest, faker and
-            istanbul.
-        -   Frontend: HTML, CSS, ReactJS, Redux, Jest, TypeScript.
+            istanbul.            
+            Snowflake,
+            Databricks (Spark SQL),            
+        -   Frontend: HTML, CSS, ReactJS, Redux, Jest, TypeScript.        
+        -   CI/CD: Github, Jenkins.
 -   [EEMS](https://dev.eems-cac.me.uk/): [CAC
     Corporation](https://www.cac.co.jp/english/), 2020
     -   A multi tenant event management web application.
