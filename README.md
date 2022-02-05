@@ -1,5 +1,5 @@
 I am a software engineer, currently based in Bali. My software
-development interests includes web and mobile development. I graduated
+development interests includes web and cloud development. I graduated
 in 2006 from [ITS](https://www.its.ac.id/) and hold a bachelor's degree
 of [Engineering
 Informatic.](https://en.wikipedia.org/wiki/Engineering_informatics#:~:text=Engineering%20Informatics%20is%20an%20engineering,The%20study%20of%20use%20of)
