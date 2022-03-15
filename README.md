@@ -4,7 +4,7 @@ in 2006 from [ITS](https://www.its.ac.id/) and hold a bachelor's degree
 of [Engineering
 Informatic.](https://en.wikipedia.org/wiki/Engineering_informatics#:~:text=Engineering%20Informatics%20is%20an%20engineering,The%20study%20of%20use%20of)
 
-I work as software engineer since 2005 and hold [Professional Scrum
+I work as software engineer since 2005 and hold  [AWS Certified Developer - Associate](https://www.credly.com/users/komang-kerisnarendra/badges) and [Professional Scrum
 Developer I (PSD I)](https://www.credly.com/badges/f68b9fe7-7f45-46f1-878e-9fe3c948a892?source=linked_in_profile)
 certification.
 
