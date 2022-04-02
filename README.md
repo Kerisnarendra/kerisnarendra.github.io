@@ -9,7 +9,7 @@ Developer I (PSD I)](https://www.credly.com/badges/f68b9fe7-7f45-46f1-878e-9fe3c
 certification.
 
 ### Projects  
--   [Prognosis Cloud](https://www.ir.com/products/platform/prognosis): [Integrated Research Limited](https://www.ir.com/), 2020 - Current
+-   [Prognosis Cloud](https://www.ir.com/products/platform/prognosis): [Integrated Research Limited](https://www.ir.com/), 2021 - Now
     -   A multi tenant cloud based unified communications monitoring and collaboration solutions.
     -   Roles: 100% backend engineers, 2% frontend engineer.
     -   Technologies:
