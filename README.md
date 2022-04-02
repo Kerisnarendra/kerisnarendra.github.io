@@ -9,7 +9,7 @@ Developer I (PSD I)](https://www.credly.com/badges/f68b9fe7-7f45-46f1-878e-9fe3c
 certification.
 
 ### Projects  
--   [Prognosis Cloud](https://www.ir.com/products/platform/prognosis): [Integrated Research Limited](https://www.ir.com/), 2021 - Current
+-   [Prognosis Cloud](https://www.ir.com/products/platform/prognosis): [Integrated Research Limited](https://www.ir.com/), 2020 - Current
     -   A multi tenant cloud based unified communications monitoring and collaboration solutions.
     -   Roles: 100% backend engineers, 2% frontend engineer.
     -   Technologies:
@@ -23,7 +23,7 @@ certification.
         -   Frontend: HTML, CSS, ReactJS, Redux, Jest, TypeScript.        
         -   CI/CD: Github, Jenkins.
 -   [EEMS](https://dev.eems-cac.me.uk/): [CAC
-    Corporation](https://www.cac.co.jp/english/), 2020 - 2021
+    Corporation](https://www.cac.co.jp/english/), 2020
     -   A multi tenant event management web application.
     -   Roles: 100% DevOps, 100% backend engineer, 30% frontend
         engineer.
