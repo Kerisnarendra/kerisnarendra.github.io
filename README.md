@@ -13,7 +13,7 @@ certification.
     -   A multi tenant cloud based unified communications monitoring and collaboration solutions.
     -   Roles: 100% backend engineers, 2% frontend engineer.
     -   Technologies:
-        -   Backend: NodeJS, TypeScript, AWS (AWS Lambda, SNS, SQS, Step Functions, DynamoDB),
+        -   Backend: NodeJS, TypeScript, AWS (AWS Lambda, SNS, SQS, Step Functions, DynamoDB, S3, EC2),
             [Mocha](https://mochajs.org/),
             [Chai](https://www.chaijs.com/),
             [Sinon](https://sinonjs.org/), supertest, faker and
