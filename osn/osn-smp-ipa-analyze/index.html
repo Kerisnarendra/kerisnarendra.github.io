@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>Dashboard OSN 2026 - Tahap 2 ke Finalis Nasional</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.0/dist/chart.umd.js" integrity="sha384-iU8HYtnGQ8Cy4zl7gbNMOhsDTTKX02BTXptVP/vqAWIaTfM7isw76iyZCsjL2eVi" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/gridjs@5.0.2/dist/gridjs.umd.js" integrity="sha384-/XXDzxe4FsGiAe50i/u9pY/Vy/uX654MHB1xoc1BJNnH1WXHhqHga9g3q5tF4gj7" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gridjs@5.0.2/dist/theme/mermaid.min.css" integrity="sha384-jZvDSsmGB9oGGT/4l9bHXGoAv1OxvG/cFmSo0dZaSqmBgvQTKDBFAMftlXTmMbNW" crossorigin="anonymous">
+<style>
+  :root { color-scheme: light; }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: #f5f6f8;
+    color: #1a1d23;
+  }
+  header {
+    background: linear-gradient(135deg, #1f4e78, #2e75b6);
+    color: #fff;
+    padding: 28px 32px;
+  }
+  header h1 { margin: 0 0 6px; font-size: 22px; font-weight: 700; }
+  header p { margin: 0; font-size: 13.5px; opacity: 0.9; }
+  main { max-width: 1180px; margin: 0 auto; padding: 24px 20px 48px; }
+
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+  .card {
+    background: #fff;
+    border-radius: 10px;
+    padding: 18px 20px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    border: 1px solid #e6e8eb;
+  }
+  .card .label { font-size: 12px; color: #6b7280; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 6px; }
+  .card .value { font-size: 28px; font-weight: 700; color: #1f4e78; }
+  .card.green .value { color: #1e7d32; }
+  .card.red .value { color: #b3261e; }
+  .card .sub { font-size: 12px; color: #9aa0a6; margin-top: 4px; }
+
+  .panels {
+    display: grid;
+    grid-template-columns: 1fr 1.6fr;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+  .panel {
+    background: #fff;
+    border-radius: 10px;
+    padding: 18px 20px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    border: 1px solid #e6e8eb;
+  }
+  .panel h2 { margin: 0 0 12px; font-size: 15px; font-weight: 600; color: #1a1d23; }
+  .chart-wrap { position: relative; height: 300px; }
+  .chart-wrap.tall { height: 420px; }
+
+  .table-panel {
+    background: #fff;
+    border-radius: 10px;
+    padding: 18px 20px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    border: 1px solid #e6e8eb;
+  }
+  .table-panel h2 { margin: 0 0 4px; font-size: 15px; font-weight: 600; }
+  .table-panel .note { font-size: 12.5px; color: #6b7280; margin-bottom: 14px; }
+
+  .status-pill {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+  .status-lolos { background: #d9f2df; color: #1e7d32; }
+  .status-tidak { background: #fde3e1; color: #b3261e; }
+
+  footer { text-align: center; padding: 16px; font-size: 12px; color: #9aa0a6; }
+
+  @media (max-width: 900px) {
+    .cards { grid-template-columns: repeat(2, 1fr); }
+    .panels { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Dashboard OSN 2026 — Jenjang SMP, Cabang IPA</h1>
+  <p>Perbandingan siswa yang lolos OSNK Tahap 2 (tingkat Kabupaten) dengan Finalis OSN Nasional 2026</p>
+</header>
+
+<main>
+  <div class="cards">
+    <div class="card">
+      <div class="label">Lolos OSNK Tahap 2 (SMP IPA)</div>
+      <div class="value" id="cardTahap2">-</div>
+      <div class="sub">Total peserta tingkat kabupaten</div>
+    </div>
+    <div class="card">
+      <div class="label">Finalis Nasional (SMP IPA)</div>
+      <div class="value" id="cardFinalis">-</div>
+      <div class="sub">Total finalis tingkat nasional</div>
+    </div>
+    <div class="card green">
+      <div class="label">Cocok dengan Tahap 2</div>
+      <div class="value" id="cardLolos">-</div>
+      <div class="sub" id="cardLolosPct">-</div>
+    </div>
+    <div class="card red">
+      <div class="label">Tidak Ditemukan di Tahap 2</div>
+      <div class="value" id="cardTidak">-</div>
+      <div class="sub" id="cardTidakPct">-</div>
+    </div>
+  </div>
+
+  <div class="panels">
+    <div class="panel">
+      <h2>Status Finalis Nasional</h2>
+      <div class="chart-wrap">
+        <canvas id="donutChart"></canvas>
+      </div>
+    </div>
+    <div class="panel">
+      <h2>Rincian per Provinsi (Top 15 berdasarkan jumlah finalis)</h2>
+      <div class="chart-wrap">
+        <canvas id="barChart"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <div class="panels" style="grid-template-columns: 1fr;">
+    <div class="panel">
+      <h2>Seluruh Provinsi — Cocok vs Tidak Ditemukan</h2>
+      <div class="chart-wrap tall">
+        <canvas id="fullProvChart"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <div class="table-panel">
+    <h2>Daftar 115 Finalis Nasional — SMP / Cabang IPA</h2>
+    <p class="note">Hijau = nama &amp; NPSN cocok dengan data lolos OSNK Tahap 2. Merah = tidak ditemukan pada data Tahap 2 yang tersedia.</p>
+    <div id="grid"></div>
+  </div>
+</main>
+
+<footer>Dibuat dari data "Hasil IPA OSNK Tahap 2 Jenjang SMP" dan "Pengumuman Finalis OSN DIKDAS Nasional 2026"</footer>
+
+<script>
+const DATA = {"totalFinalis": 115, "totalLolos": 30, "totalTidak": 85, "totalTahap2": 4088, "finalis": [{"nama": "ALMA CHIARA QADISHA", "npsn": "90101018", "sekolah": "SEKOLAH SI KUALA LUMPUR TINGKAT SMP", "kabkota": "MALAYSIA", "provinsi": "LUAR NEGERI", "status": "Lolos"}, {"nama": "HALIMATUN SA'DIAH", "npsn": "10105613", "sekolah": "SMP NEGERI 6 LHOKSEUMAWE", "kabkota": "KOTA LHOKSEUMAWE", "provinsi": "PROV. ACEH", "status": "TidakDitemukan"}, {"nama": "M. ALFI SYAHRI", "npsn": "10103127", "sekolah": "SMP NEGERI 1 KUTACANE", "kabkota": "KAB. ACEH TENGGARA", "provinsi": "PROV. ACEH", "status": "Lolos"}, {"nama": "SAFWAN", "npsn": "10103078", "sekolah": "SMP NEGERI 2 LAWE SIGALAGALA", "kabkota": "KAB. ACEH TENGGARA", "provinsi": "PROV. ACEH", "status": "Lolos"}, {"nama": "CUT AURATUL AINI", "npsn": "10105613", "sekolah": "SMP NEGERI 6 LHOKSEUMAWE", "kabkota": "KOTA LHOKSEUMAWE", "provinsi": "PROV. ACEH", "status": "TidakDitemukan"}, {"nama": "MUHAMMAD SULTAN GHAISAN", "npsn": "10114176", "sekolah": "MTSN 1 BANDA ACEH", "kabkota": "KOTA BANDA ACEH", "provinsi": "PROV. ACEH", "status": "TidakDitemukan"}, {"nama": "NOAH ELIAS GOUTAMA", "npsn": "50102807", "sekolah": "SMP NEGERI 2 AMLAPURA", "kabkota": "KAB. KARANG ASEM", "provinsi": "PROV. BALI", "status": "TidakDitemukan"}, {"nama": "MADE WAHYU KRSNA ANANDA RAHADI", "npsn": "50100820", "sekolah": "SMP NEGERI 1 NEGARA", "kabkota": "KAB. JEMBRANA", "provinsi": "PROV. BALI", "status": "TidakDitemukan"}, {"nama": "GUSTI NGURAH PUTU ANAND WERDHIGUNA AMERTAJAYA", "npsn": "50103142", "sekolah": "SMP NEGERI 1 DENPASAR", "kabkota": "KOTA DENPASAR", "provinsi": "PROV. BALI", "status": "Lolos"}, {"nama": "I PUTU ALDO DAMIAN ARIADI", "npsn": "50102032", "sekolah": "SMP NEGERI HINDU 2 PAYANGAN", "kabkota": "KAB. GIANYAR", "provinsi": "PROV. BALI", "status": "TidakDitemukan"}, {"nama": "PUTU YUGA AIRLANGGA", "npsn": "50105460", "sekolah": "SMP WIDIATMIKA", "kabkota": "KAB. BADUNG", "provinsi": "PROV. BALI", "status": "TidakDitemukan"}, {"nama": "AMELIA PUTRI", "npsn": "20614633", "sekolah": "SMPN 6 SATU ATAP BAYAH", "kabkota": "KAB. LEBAK", "provinsi": "PROV. BANTEN", "status": "TidakDitemukan"}, {"nama": "SEKARAYU ALISHA SETIAWAN", "npsn": "20613802", "sekolah": "SMP KHARISMA BANGSA", "kabkota": "KOTA TANGERANG SELATAN", "provinsi": "PROV. BANTEN", "status": "TidakDitemukan"}, {"nama": "GANESHA AZKA PARAHITA WILARNO", "npsn": "20605149", "sekolah": "SMP NEGERI 1 KOTA SERANG", "kabkota": "KOTA SERANG", "provinsi": "PROV. BANTEN", "status": "TidakDitemukan"}, {"nama": "ARYAPUTRA AQILA NAUFAL ATHARIZZ", "npsn": "20613802", "sekolah": "SMP KHARISMA BANGSA", "kabkota": "KOTA TANGERANG SELATAN", "provinsi": "PROV. BANTEN", "status": "TidakDitemukan"}, {"nama": "SAMUEL LOHENDY", "npsn": "20603531", "sekolah": "SMPK PENABUR GADING SERPONG", "kabkota": "KAB. TANGERANG", "provinsi": "PROV. BANTEN", "status": "Lolos"}, {"nama": "RIFQI NUR ROKHMAN", "npsn": "10700947", "sekolah": "SMP NEGERI 02 BENGKULU SELATAN", "kabkota": "KAB. BENGKULU SELATAN", "provinsi": "PROV. BENGKULU", "status": "TidakDitemukan"}, {"nama": "DASTAN ARSYA ROVINO", "npsn": "20411878", "sekolah": "SMP KESATUAN BANGSA", "kabkota": "KAB. BANTUL", "provinsi": "PROV. D.I. YOGYAKARTA", "status": "TidakDitemukan"}, {"nama": "AHMAD NURUZZAMAN", "npsn": "69786845", "sekolah": "SMP MUHAMMADIYAH AL MUJAHIDIN", "kabkota": "KAB. GUNUNG KIDUL", "provinsi": "PROV. D.I. YOGYAKARTA", "status": "TidakDitemukan"}, {"nama": "HANUN MAY PUTRI", "npsn": "20407349", "sekolah": "SMP NEGERI 1 PATUK", "kabkota": "KAB. GUNUNG KIDUL", "provinsi": "PROV. D.I. YOGYAKARTA", "status": "TidakDitemukan"}, {"nama": "MUHAMMAD AKHTAR ARRASYID", "npsn": "20401090", "sekolah": "SMP NEGERI 4 PAKEM", "kabkota": "KAB. SLEMAN", "provinsi": "PROV. D.I. YOGYAKARTA", "status": "TidakDitemukan"}, {"nama": "NAILA ASSYIFA FAJAR", "npsn": "20401090", "sekolah": "SMP NEGERI 4 PAKEM", "kabkota": "KAB. SLEMAN", "provinsi": "PROV. D.I. YOGYAKARTA", "status": "TidakDitemukan"}, {"nama": "JOSHUA THEODORE LIE", "npsn": "20106551", "sekolah": "SMP KRISTEN 4 PENABUR", "kabkota": "KOTA JAKARTA UTARA", "provinsi": "PROV. D.K.I. JAKARTA", "status": "TidakDitemukan"}, {"nama": "NATHANAEL ZEFANYA", "npsn": "20106551", "sekolah": "SMP KRISTEN 4 PENABUR", "kabkota": "KOTA JAKARTA UTARA", "provinsi": "PROV. D.K.I. JAKARTA", "status": "TidakDitemukan"}, {"nama": "REZA HAIDAR KUSUMA", "npsn": "20103580", "sekolah": "SMP NEGERI 255", "kabkota": "KOTA JAKARTA TIMUR", "provinsi": "PROV. D.K.I. JAKARTA", "status": "TidakDitemukan"}, {"nama": "HAIFA AURORA HAPSARI", "npsn": "69967107", "sekolah": "SMP NIZAMIA ANDALUSIA", "kabkota": "KOTA JAKARTA TIMUR", "provinsi": "PROV. D.K.I. JAKARTA", "status": "Lolos"}, {"nama": "ALDENLY CHARISTHEAS KAN", "npsn": "20109324", "sekolah": "SMP IPEKA PURI", "kabkota": "KOTA JAKARTA BARAT", "provinsi": "PROV. D.K.I. JAKARTA", "status": "TidakDitemukan"}, {"nama": "AISYAH DWI ANGGUN", "npsn": "40500369", "sekolah": "SMP NEGERI 1 KWANDANG", "kabkota": "KAB. GORONTALO UTARA", "provinsi": "PROV. GORONTALO", "status": "Lolos"}, {"nama": "KEVIN JILI", "npsn": "10504662", "sekolah": "SMP UNGGUL SAKTI", "kabkota": "KOTA JAMBI", "provinsi": "PROV. JAMBI", "status": "TidakDitemukan"}, {"nama": "IKRAM ANDVARI AKHMAD", "npsn": "69943608", "sekolah": "SMP CAHAYA RANCAMAYA", "kabkota": "KOTA BOGOR", "provinsi": "PROV. JAWA BARAT", "status": "TidakDitemukan"}, {"nama": "ERIZA HAFIDZAH ZAMA", "npsn": "20222964", "sekolah": "SMP NEGERI 16 BEKASI", "kabkota": "KOTA BEKASI", "provinsi": "PROV. JAWA BARAT", "status": "TidakDitemukan"}, {"nama": "FADHLURROHMAN FACHRI ALFAYYAD", "npsn": "69963024", "sekolah": "SMP FITRAH ISLAMIC WORLD ACADEMY", "kabkota": "KAB. BOGOR", "provinsi": "PROV. JAWA BARAT", "status": "TidakDitemukan"}, {"nama": "KENZO SUSANTO", "npsn": "20254295", "sekolah": "SMP TARUNA BANGSA", "kabkota": "KAB. BOGOR", "provinsi": "PROV. JAWA BARAT", "status": "Lolos"}, {"nama": "ZAHIRA NISRINE RIEFZI", "npsn": "20224072", "sekolah": "SMP NEGERI 1 CIMAHI", "kabkota": "KOTA CIMAHI", "provinsi": "PROV. JAWA BARAT", "status": "TidakDitemukan"}, {"nama": "MUHAMMAD FAQIH ABDILLAH", "npsn": "20301919", "sekolah": "SMP AL IRSYAD AL ISLAMIYYAH", "kabkota": "KAB. BANYUMAS", "provinsi": "PROV. JAWA TENGAH", "status": "TidakDitemukan"}, {"nama": "ALARICK AGHARR ADILA", "npsn": "69988132", "sekolah": "SMP SEMESTA 2", "kabkota": "KOTA SEMARANG", "provinsi": "PROV. JAWA TENGAH", "status": "TidakDitemukan"}, {"nama": "STANISLAUS JALU PUTRA PAMBUDI", "npsn": "20328054", "sekolah": "SMP WARGA SURAKARTA", "kabkota": "KOTA SURAKARTA", "provinsi": "PROV. JAWA TENGAH", "status": "TidakDitemukan"}, {"nama": "ANINDYA MAHESWARI", "npsn": "20338867", "sekolah": "SMP NEGERI 3 PATI", "kabkota": "KAB. PATI", "provinsi": "PROV. JAWA TENGAH", "status": "TidakDitemukan"}, {"nama": "NADYA FEBIAN NURUL RACHMAWAN", "npsn": "70041162", "sekolah": "SMP ISLAM AL AZHAR 60", "kabkota": "KOTA PEKALONGAN", "provinsi": "PROV. JAWA TENGAH", "status": "Lolos"}, {"nama": "RAMA BYAN AZIZI", "npsn": "20583813", "sekolah": "MTSN 1 KOTA MALANG", "kabkota": "KOTA MALANG", "provinsi": "PROV. JAWA TIMUR", "status": "TidakDitemukan"}, {"nama": "FARREL ATHARIZZ FITRATILLAH", "npsn": "20506349", "sekolah": "SMP NEGERI 1 LAMONGAN", "kabkota": "KAB. LAMONGAN", "provinsi": "PROV. JAWA TIMUR", "status": "TidakDitemukan"}, {"nama": "MIRZA AMSYAR EL MU'AFI", "npsn": "20523746", "sekolah": "SMPS AL- FURQAN", "kabkota": "KAB. JEMBER", "provinsi": "PROV. JAWA TIMUR", "status": "Lolos"}, {"nama": "ALDRIAN ISLAMI MAHANIPUNA ALEXI", "npsn": "20581693", "sekolah": "MTSN 3 BANYUWANGI", "kabkota": "KAB. BANYUWANGI", "provinsi": "PROV. JAWA TIMUR", "status": "TidakDitemukan"}, {"nama": "ATHALLA SATRIA PRATOMO", "npsn": "60729406", "sekolah": "SMP PROGRESIF BUMI SHALAWAT", "kabkota": "KAB. SIDOARJO", "provinsi": "PROV. JAWA TIMUR", "status": "TidakDitemukan"}, {"nama": "CHLOE MIKHAYLA SAVANNA", "npsn": "30105225", "sekolah": "SMP BINA MULIA", "kabkota": "KOTA PONTIANAK", "provinsi": "PROV. KALIMANTAN BARAT", "status": "Lolos"}, {"nama": "IBRAHIM NAUFAL SYAHREZA", "npsn": "30106446", "sekolah": "SMP NEGERI 2 NANGA PINOH", "kabkota": "KAB. MELAWI", "provinsi": "PROV. KALIMANTAN BARAT", "status": "Lolos"}, {"nama": "DELISHA AZZALEA TANTOKO", "npsn": "69944768", "sekolah": "SMP IT ROBBANI", "kabkota": "KOTA BANJARBARU", "provinsi": "PROV. KALIMANTAN SELATAN", "status": "TidakDitemukan"}, {"nama": "FEBI LISNAWATI", "npsn": "70027765", "sekolah": "SMPS 11 BEST AGRO", "kabkota": "KAB. PULANG PISAU", "provinsi": "PROV. KALIMANTAN TENGAH", "status": "TidakDitemukan"}, {"nama": "SATRIA SIANTURI", "npsn": "30204818", "sekolah": "SMP NEGERI 2 BALAI RIAM", "kabkota": "KAB. SUKAMARA", "provinsi": "PROV. KALIMANTAN TENGAH", "status": "TidakDitemukan"}, {"nama": "FARHAN SHEHZAD ADYATAMA", "npsn": "30208912", "sekolah": "MTSN 1 KOTA PALANGKA RAYA", "kabkota": "KOTA PALANGKA RAYA", "provinsi": "PROV. KALIMANTAN TENGAH", "status": "TidakDitemukan"}, {"nama": "NAURAFANIA WINANTI WIDYAKIRANA", "npsn": "30208912", "sekolah": "MTSN 1 KOTA PALANGKA RAYA", "kabkota": "KOTA PALANGKA RAYA", "provinsi": "PROV. KALIMANTAN TENGAH", "status": "TidakDitemukan"}, {"nama": "NAZRULHAQ IZDIYAD", "npsn": "30200846", "sekolah": "MTSN BARITO SELATAN", "kabkota": "KAB. BARITO SELATAN", "provinsi": "PROV. KALIMANTAN TENGAH", "status": "TidakDitemukan"}, {"nama": "MUHAMMAD RIFQY AFZA SULAIMAN", "npsn": "30405509", "sekolah": "SMP IT AL AULIYA", "kabkota": "KOTA BALIKPAPAN", "provinsi": "PROV. KALIMANTAN TIMUR", "status": "TidakDitemukan"}, {"nama": "RAFA AVICENNA ADHYASTHA TSAQIB", "npsn": "30401800", "sekolah": "SMP YPK", "kabkota": "KOTA BONTANG", "provinsi": "PROV. KALIMANTAN TIMUR", "status": "Lolos"}, {"nama": "LIONEL TSAQIF ARTIANBEL", "npsn": "30400784", "sekolah": "SMP YPPSB SANGATTA UTARA", "kabkota": "KAB. KUTAI TIMUR", "provinsi": "PROV. KALIMANTAN TIMUR", "status": "TidakDitemukan"}, {"nama": "JUSTIN IVANDER", "npsn": "30405716", "sekolah": "SMP K IPEKA", "kabkota": "KOTA BALIKPAPAN", "provinsi": "PROV. KALIMANTAN TIMUR", "status": "TidakDitemukan"}, {"nama": "ABIMANYU AFIF RAHMAN", "npsn": "30401706", "sekolah": "SMP NEGERI 7 TARAKAN", "kabkota": "KOTA TARAKAN", "provinsi": "PROV. KALIMANTAN UTARA", "status": "Lolos"}, {"nama": "AISYAH SYIFA ARDHIANI", "npsn": "10900991", "sekolah": "SMP NEGERI 1 GANTUNG", "kabkota": "KAB. BELITUNG TIMUR", "provinsi": "PROV. KEPULAUAN BANGKA BELITUNG", "status": "TidakDitemukan"}, {"nama": "GARCIA JOVITA", "npsn": "10900755", "sekolah": "SMP NEGERI 1 KOBA", "kabkota": "KAB. BANGKA TENGAH", "provinsi": "PROV. KEPULAUAN BANGKA BELITUNG", "status": "TidakDitemukan"}, {"nama": "CHRISTOPHER LUIS HERNANDES", "npsn": "11001779", "sekolah": "SMP MONDIAL", "kabkota": "KOTA BATAM", "provinsi": "PROV. KEPULAUAN RIAU", "status": "TidakDitemukan"}, {"nama": "MARVIO VALEN SASTRAWIJAYA", "npsn": "11001786", "sekolah": "SMP YOS SUDARSO", "kabkota": "KOTA BATAM", "provinsi": "PROV. KEPULAUAN RIAU", "status": "TidakDitemukan"}, {"nama": "KIMBERLINE ABDIEL MULIANA", "npsn": "11001786", "sekolah": "SMP YOS SUDARSO", "kabkota": "KOTA BATAM", "provinsi": "PROV. KEPULAUAN RIAU", "status": "TidakDitemukan"}, {"nama": "NATANAEL ALVER PANGGABEAN", "npsn": "10807157", "sekolah": "SMP XAVERIUS 1 BANDAR LAMPUNG", "kabkota": "KOTA BANDAR LAMPUNG", "provinsi": "PROV. LAMPUNG", "status": "TidakDitemukan"}, {"nama": "ALFAN DHAMA PUTRA", "npsn": "10807224", "sekolah": "SMP AL KAUTSAR", "kabkota": "KOTA BANDAR LAMPUNG", "provinsi": "PROV. LAMPUNG", "status": "TidakDitemukan"}, {"nama": "VIONIX CHERLINE BAHARA", "npsn": "10807157", "sekolah": "SMP XAVERIUS 1 BANDAR LAMPUNG", "kabkota": "KOTA BANDAR LAMPUNG", "provinsi": "PROV. LAMPUNG", "status": "Lolos"}, {"nama": "CHRISTIAN LEONARD", "npsn": "10807279", "sekolah": "SMP IMMANUEL", "kabkota": "KOTA BANDAR LAMPUNG", "provinsi": "PROV. LAMPUNG", "status": "TidakDitemukan"}, {"nama": "JUSUF MIKAIL ANDWI DHARMA", "npsn": "10807224", "sekolah": "SMP AL KAUTSAR", "kabkota": "KOTA BANDAR LAMPUNG", "provinsi": "PROV. LAMPUNG", "status": "TidakDitemukan"}, {"nama": "ALEX GOSPEL NOTANUBUN", "npsn": "60105454", "sekolah": "SMP KRISTEN ANUGERAH LANGGUR", "kabkota": "KAB. MALUKU TENGGARA", "provinsi": "PROV. MALUKU", "status": "Lolos"}, {"nama": "CATTLEYA CHAVALLI RAHALLUS", "npsn": "60105454", "sekolah": "SMP KRISTEN ANUGERAH LANGGUR", "kabkota": "KAB. MALUKU TENGGARA", "provinsi": "PROV. MALUKU", "status": "Lolos"}, {"nama": "LEON MASCHERANO THE", "npsn": "60103087", "sekolah": "SMP KRISTEN KALAM KUDUS", "kabkota": "KOTA AMBON", "provinsi": "PROV. MALUKU", "status": "Lolos"}, {"nama": "AGNES JUSTICIA SUOT", "npsn": "60103087", "sekolah": "SMP KRISTEN KALAM KUDUS", "kabkota": "KOTA AMBON", "provinsi": "PROV. MALUKU", "status": "Lolos"}, {"nama": "JULFITRA AGUSSALIM", "npsn": "60203622", "sekolah": "SMP NEGERI 1 TIDORE KEPULAUAN", "kabkota": "KOTA TIDORE KEPULAUAN", "provinsi": "PROV. MALUKU UTARA", "status": "TidakDitemukan"}, {"nama": "NI WAYAN ERIKA SWANDRI", "npsn": "50205383", "sekolah": "SMP NEGERI 2 KURIPAN", "kabkota": "KAB. LOMBOK BARAT", "provinsi": "PROV. NUSA TENGGARA BARAT", "status": "TidakDitemukan"}, {"nama": "DIMAS RIZKY ANDREAN", "npsn": "50204474", "sekolah": "SMP NEGERI 15 MATARAM", "kabkota": "KOTA MATARAM", "provinsi": "PROV. NUSA TENGGARA BARAT", "status": "TidakDitemukan"}, {"nama": "ASSYFA GHINA EDLINA", "npsn": "50203369", "sekolah": "SMP NEGERI 1 SUMBAWA BESAR", "kabkota": "KAB. SUMBAWA", "provinsi": "PROV. NUSA TENGGARA BARAT", "status": "TidakDitemukan"}, {"nama": "DIAZ FAIZA AMIRADINATA", "npsn": "50204470", "sekolah": "SMP NEGERI 2 MATARAM", "kabkota": "KOTA MATARAM", "provinsi": "PROV. NUSA TENGGARA BARAT", "status": "Lolos"}, {"nama": "ALLYCE NAFTALENA TAMENO", "npsn": "50304975", "sekolah": "SMP KATOLIK ST YOSEPH", "kabkota": "KOTA KUPANG", "provinsi": "PROV. NUSA TENGGARA TIMUR", "status": "Lolos"}, {"nama": "ALYA ZAFIRAH AQWA", "npsn": "70036890", "sekolah": "SMP PLUS PUTRA PERMATA", "kabkota": "KAB. BIAK NUMFOR", "provinsi": "PROV. PAPUA", "status": "Lolos"}, {"nama": "ARIEL DAVID LIESYANTO", "npsn": "60401955", "sekolah": "SMP NEGERI 2 BINTUNI", "kabkota": "KAB. TELUK BINTUNI", "provinsi": "PROV. PAPUA BARAT", "status": "TidakDitemukan"}, {"nama": "ALARICH ALBY FACHRI AZIS", "npsn": "60702908", "sekolah": "MTSS SAINS AL GEBRA", "kabkota": "KOTA SORONG", "provinsi": "PROV. PAPUA BARAT DAYA", "status": "TidakDitemukan"}, {"nama": "AURELYA CHRISTYN MEAN", "npsn": "60300784", "sekolah": "SMP NEGERI 2 WAMENA", "kabkota": "KAB. JAYAWIJAYA", "provinsi": "PROV. PAPUA PEGUNUNGAN", "status": "TidakDitemukan"}, {"nama": "BINTI RAHMAWATI KHOIRUNNISA", "npsn": "60300651", "sekolah": "SMP MUHAMMADIYAH MERAUKE", "kabkota": "KAB. MERAUKE", "provinsi": "PROV. PAPUA SELATAN", "status": "Lolos"}, {"nama": "ELANG GRACESON THEO HUTAURUK", "npsn": "60302880", "sekolah": "SMP YPJ KUALA KENCANA", "kabkota": "KAB. MIMIKA", "provinsi": "PROV. PAPUA TENGAH", "status": "TidakDitemukan"}, {"nama": "DAVAN KINANDRA SUJANA", "npsn": "10495032", "sekolah": "SMP DARMA YUDHA", "kabkota": "KOTA PEKANBARU", "provinsi": "PROV. RIAU", "status": "TidakDitemukan"}, {"nama": "AIMAR ABE ANDRIYANTO", "npsn": "10495032", "sekolah": "SMP DARMA YUDHA", "kabkota": "KOTA PEKANBARU", "provinsi": "PROV. RIAU", "status": "TidakDitemukan"}, {"nama": "AFFAN FAIZ ARFIAREZA", "npsn": "10404485", "sekolah": "SMP AS SHOFA", "kabkota": "KOTA PEKANBARU", "provinsi": "PROV. RIAU", "status": "TidakDitemukan"}, {"nama": "RADHIN ADRIAN SALIM", "npsn": "10499307", "sekolah": "MTSN 1 PEKANBARU", "kabkota": "KOTA PEKANBARU", "provinsi": "PROV. RIAU", "status": "TidakDitemukan"}, {"nama": "NOEL MAJU RIVAN SIHALOHO", "npsn": "10404056", "sekolah": "SMP SANTA MARIA", "kabkota": "KOTA PEKANBARU", "provinsi": "PROV. RIAU", "status": "TidakDitemukan"}, {"nama": "AHMAD AFFANDY", "npsn": "40600679", "sekolah": "SMP NEGERI 2 POLEWALI", "kabkota": "KAB. POLEWALI MANDAR", "provinsi": "PROV. SULAWESI BARAT", "status": "TidakDitemukan"}, {"nama": "GIRELLI AVELLINO", "npsn": "40306534", "sekolah": "SMP KATOLIK PELITA BANGSA", "kabkota": "KAB. TANA TORAJA", "provinsi": "PROV. SULAWESI SELATAN", "status": "Lolos"}, {"nama": "AHMAD HANIF IRFAN", "npsn": "40310199", "sekolah": "SMP ISLAM ATHIRAH BUKIT BARUGA", "kabkota": "KOTA MAKASSAR", "provinsi": "PROV. SULAWESI SELATAN", "status": "TidakDitemukan"}, {"nama": "MUHAMMAD FAIZ RAMADHAN", "npsn": "40310199", "sekolah": "SMP ISLAM ATHIRAH BUKIT BARUGA", "kabkota": "KOTA MAKASSAR", "provinsi": "PROV. SULAWESI SELATAN", "status": "TidakDitemukan"}, {"nama": "MUHAMMAD FATHIR T", "npsn": "40203597", "sekolah": "SMP AL AZHAR MANDIRI PALU", "kabkota": "KOTA PALU", "provinsi": "PROV. SULAWESI TENGAH", "status": "TidakDitemukan"}, {"nama": "TSAQIFAH AISHA", "npsn": "40203597", "sekolah": "SMP AL AZHAR MANDIRI PALU", "kabkota": "KOTA PALU", "provinsi": "PROV. SULAWESI TENGAH", "status": "TidakDitemukan"}, {"nama": "ELMOSES LAVIANO THIMOTHY SOLLA", "npsn": "40203563", "sekolah": "SMP NEGERI 1 PALU", "kabkota": "KOTA PALU", "provinsi": "PROV. SULAWESI TENGAH", "status": "TidakDitemukan"}, {"nama": "PRINCESS ZABRINA ALEXANDRA PULU", "npsn": "40203563", "sekolah": "SMP NEGERI 1 PALU", "kabkota": "KOTA PALU", "provinsi": "PROV. SULAWESI TENGAH", "status": "TidakDitemukan"}, {"nama": "AINIATUL HUSNA", "npsn": "40404862", "sekolah": "SMP NEGERI 4 SAMATURU", "kabkota": "KAB. KOLAKA", "provinsi": "PROV. SULAWESI TENGGARA", "status": "TidakDitemukan"}, {"nama": "HAFEDZ EL-FAROUQ ABAPIHI", "npsn": "40405966", "sekolah": "MTSS BAITUL ARQOM", "kabkota": "KAB. KOLAKA", "provinsi": "PROV. SULAWESI TENGGARA", "status": "TidakDitemukan"}, {"nama": "MUH. NABAWI ARBAA RAMADHAN", "npsn": "40406047", "sekolah": "MTSS PESRI KENDARI", "kabkota": "KOTA KENDARI", "provinsi": "PROV. SULAWESI TENGGARA", "status": "Lolos"}, {"nama": "DAVANO JOSEPH KOROMPIS", "npsn": "40103210", "sekolah": "SMP KATOLIK GONZAGA TOMOHON", "kabkota": "KOTA TOMOHON", "provinsi": "PROV. SULAWESI UTARA", "status": "TidakDitemukan"}, {"nama": "SYAILENDRA MAULANA ARDAN", "npsn": "70024078", "sekolah": "SMP SWASTA ISLAM JHONS FEBBY", "kabkota": "KOTA PADANG", "provinsi": "PROV. SUMATERA BARAT", "status": "TidakDitemukan"}, {"nama": "ALBY PRATAMA", "npsn": "10310782", "sekolah": "SMP IT INSAN CENDEKIA", "kabkota": "KOTA PAYAKUMBUH", "provinsi": "PROV. SUMATERA BARAT", "status": "Lolos"}, {"nama": "ANINDYA ZHAFIRA KHAIRUNNISA", "npsn": "10304791", "sekolah": "SMP IT ADZKIA", "kabkota": "KOTA PADANG", "provinsi": "PROV. SUMATERA BARAT", "status": "Lolos"}, {"nama": "NADHIF HASDI PRATAMA", "npsn": "10311287", "sekolah": "MTSN 1 PASAMAN", "kabkota": "KAB. PASAMAN", "provinsi": "PROV. SUMATERA BARAT", "status": "Lolos"}, {"nama": "ANA RUHAMA", "npsn": "69949908", "sekolah": "SMPS IT DAR EL-IMAN", "kabkota": "KOTA PADANG", "provinsi": "PROV. SUMATERA BARAT", "status": "TidakDitemukan"}, {"nama": "NICIA QUINN HIDAYAT", "npsn": "10609531", "sekolah": "SMP KUSUMA BANGSA PALEMBANG", "kabkota": "KOTA PALEMBANG", "provinsi": "PROV. SUMATERA SELATAN", "status": "TidakDitemukan"}, {"nama": "LUISHA SALSABILLA", "npsn": "10609531", "sekolah": "SMP KUSUMA BANGSA PALEMBANG", "kabkota": "KOTA PALEMBANG", "provinsi": "PROV. SUMATERA SELATAN", "status": "TidakDitemukan"}, {"nama": "FIKRI RAMADHAN", "npsn": "69964429", "sekolah": "SMP ISLAM AL-AZHAR 33 PALEMBANG", "kabkota": "KOTA PALEMBANG", "provinsi": "PROV. SUMATERA SELATAN", "status": "TidakDitemukan"}, {"nama": "KEVIN JOSE ZEAGERS", "npsn": "10648887", "sekolah": "SMP IGNATIUS GLOBAL SCHOOL PALEMBANG", "kabkota": "KOTA PALEMBANG", "provinsi": "PROV. SUMATERA SELATAN", "status": "TidakDitemukan"}, {"nama": "MUHAMMAD AL FATIH", "npsn": "69825144", "sekolah": "SMP IT HARAPAN MULIA PALEMBANG", "kabkota": "KOTA PALEMBANG", "provinsi": "PROV. SUMATERA SELATAN", "status": "Lolos"}, {"nama": "BENEDICT YOEL ZENDRATO", "npsn": "10260074", "sekolah": "SMP NEGERI 2 HILIDUHO", "kabkota": "KAB. NIAS", "provinsi": "PROV. SUMATERA UTARA", "status": "TidakDitemukan"}, {"nama": "PETRINA HURA", "npsn": "10262335", "sekolah": "SMPN 6 IDANOGAWO", "kabkota": "KAB. NIAS", "provinsi": "PROV. SUMATERA UTARA", "status": "TidakDitemukan"}, {"nama": "LESTETIS MARDALENA ZALUKHU", "npsn": "69947334", "sekolah": "UPTD SMP NEGERI 8 GUNUNGSITOLI", "kabkota": "KOTA GUNUNGSITOLI", "provinsi": "PROV. SUMATERA UTARA", "status": "TidakDitemukan"}, {"nama": "CHARLES FIRMAN GEA", "npsn": "10260074", "sekolah": "SMP NEGERI 2 HILIDUHO", "kabkota": "KAB. NIAS", "provinsi": "PROV. SUMATERA UTARA", "status": "TidakDitemukan"}, {"nama": "NISCAHYA PUTRI JELITA MENDROFA", "npsn": "69851863", "sekolah": "SMP NEGERI 4 HILISERANGKAI", "kabkota": "KAB. NIAS", "provinsi": "PROV. SUMATERA UTARA", "status": "Lolos"}], "provStats": [{"provinsi": "PROV. ACEH", "total": 5, "lolos": 2, "tidak": 3}, {"provinsi": "PROV. BALI", "total": 5, "lolos": 1, "tidak": 4}, {"provinsi": "PROV. BANTEN", "total": 5, "lolos": 1, "tidak": 4}, {"provinsi": "PROV. D.I. YOGYAKARTA", "total": 5, "lolos": 0, "tidak": 5}, {"provinsi": "PROV. D.K.I. JAKARTA", "total": 5, "lolos": 1, "tidak": 4}, {"provinsi": "PROV. JAWA BARAT", "total": 5, "lolos": 1, "tidak": 4}, {"provinsi": "PROV. JAWA TENGAH", "total": 5, "lolos": 1, "tidak": 4}, {"provinsi": "PROV. JAWA TIMUR", "total": 5, "lolos": 1, "tidak": 4}, {"provinsi": "PROV. KALIMANTAN TENGAH", "total": 5, "lolos": 0, "tidak": 5}, {"provinsi": "PROV. LAMPUNG", "total": 5, "lolos": 1, "tidak": 4}, {"provinsi": "PROV. RIAU", "total": 5, "lolos": 0, "tidak": 5}, {"provinsi": "PROV. SUMATERA BARAT", "total": 5, "lolos": 3, "tidak": 2}, {"provinsi": "PROV. SUMATERA SELATAN", "total": 5, "lolos": 1, "tidak": 4}, {"provinsi": "PROV. SUMATERA UTARA", "total": 5, "lolos": 1, "tidak": 4}, {"provinsi": "PROV. KALIMANTAN TIMUR", "total": 4, "lolos": 1, "tidak": 3}, {"provinsi": "PROV. MALUKU", "total": 4, "lolos": 4, "tidak": 0}, {"provinsi": "PROV. NUSA TENGGARA BARAT", "total": 4, "lolos": 1, "tidak": 3}, {"provinsi": "PROV. SULAWESI TENGAH", "total": 4, "lolos": 0, "tidak": 4}, {"provinsi": "PROV. KEPULAUAN RIAU", "total": 3, "lolos": 0, "tidak": 3}, {"provinsi": "PROV. SULAWESI SELATAN", "total": 3, "lolos": 1, "tidak": 2}, {"provinsi": "PROV. SULAWESI TENGGARA", "total": 3, "lolos": 1, "tidak": 2}, {"provinsi": "PROV. KALIMANTAN BARAT", "total": 2, "lolos": 2, "tidak": 0}, {"provinsi": "PROV. KEPULAUAN BANGKA BELITUNG", "total": 2, "lolos": 0, "tidak": 2}, {"provinsi": "LUAR NEGERI", "total": 1, "lolos": 1, "tidak": 0}, {"provinsi": "PROV. BENGKULU", "total": 1, "lolos": 0, "tidak": 1}, {"provinsi": "PROV. GORONTALO", "total": 1, "lolos": 1, "tidak": 0}, {"provinsi": "PROV. JAMBI", "total": 1, "lolos": 0, "tidak": 1}, {"provinsi": "PROV. KALIMANTAN SELATAN", "total": 1, "lolos": 0, "tidak": 1}, {"provinsi": "PROV. KALIMANTAN UTARA", "total": 1, "lolos": 1, "tidak": 0}, {"provinsi": "PROV. MALUKU UTARA", "total": 1, "lolos": 0, "tidak": 1}, {"provinsi": "PROV. NUSA TENGGARA TIMUR", "total": 1, "lolos": 1, "tidak": 0}, {"provinsi": "PROV. PAPUA", "total": 1, "lolos": 1, "tidak": 0}, {"provinsi": "PROV. PAPUA BARAT", "total": 1, "lolos": 0, "tidak": 1}, {"provinsi": "PROV. PAPUA BARAT DAYA", "total": 1, "lolos": 0, "tidak": 1}, {"provinsi": "PROV. PAPUA PEGUNUNGAN", "total": 1, "lolos": 0, "tidak": 1}, {"provinsi": "PROV. PAPUA SELATAN", "total": 1, "lolos": 1, "tidak": 0}, {"provinsi": "PROV. PAPUA TENGAH", "total": 1, "lolos": 0, "tidak": 1}, {"provinsi": "PROV. SULAWESI BARAT", "total": 1, "lolos": 0, "tidak": 1}, {"provinsi": "PROV. SULAWESI UTARA", "total": 1, "lolos": 0, "tidak": 1}]};
+
+document.getElementById('cardTahap2').textContent = DATA.totalTahap2.toLocaleString('id-ID');
+document.getElementById('cardFinalis').textContent = DATA.totalFinalis.toLocaleString('id-ID');
+document.getElementById('cardLolos').textContent = DATA.totalLolos.toLocaleString('id-ID');
+document.getElementById('cardTidak').textContent = DATA.totalTidak.toLocaleString('id-ID');
+document.getElementById('cardLolosPct').textContent = (DATA.totalLolos / DATA.totalFinalis * 100).toFixed(1) + '% dari finalis nasional';
+document.getElementById('cardTidakPct').textContent = (DATA.totalTidak / DATA.totalFinalis * 100).toFixed(1) + '% dari finalis nasional';
+
+new Chart(document.getElementById('donutChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Lolos dari Tahap 2', 'Tidak ditemukan di Tahap 2'],
+    datasets: [{
+      data: [DATA.totalLolos, DATA.totalTidak],
+      backgroundColor: ['#2e9e4f', '#e0554a'],
+      borderWidth: 0
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { position: 'bottom', labels: { font: { size: 12 } } },
+      tooltip: {
+        callbacks: {
+          label: (ctx) => `${ctx.label}: ${ctx.raw} siswa (${(ctx.raw/DATA.totalFinalis*100).toFixed(1)}%)`
+        }
+      }
+    }
+  }
+});
+
+const topProv = DATA.provStats.slice(0, 15);
+new Chart(document.getElementById('barChart'), {
+  type: 'bar',
+  data: {
+    labels: topProv.map(p => p.provinsi.replace('PROV. ', '')),
+    datasets: [
+      { label: 'Lolos Tahap 2', data: topProv.map(p => p.lolos), backgroundColor: '#2e9e4f' },
+      { label: 'Tidak Ditemukan', data: topProv.map(p => p.tidak), backgroundColor: '#e0554a' }
+    ]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    scales: {
+      x: { stacked: true, ticks: { font: { size: 10 }, autoSkip: false, maxRotation: 60, minRotation: 45 } },
+      y: { stacked: true, beginAtZero: true, ticks: { precision: 0 } }
+    },
+    plugins: { legend: { position: 'top' } }
+  }
+});
+
+const allProv = DATA.provStats.slice().sort((a,b) => b.total - a.total);
+new Chart(document.getElementById('fullProvChart'), {
+  type: 'bar',
+  data: {
+    labels: allProv.map(p => p.provinsi.replace('PROV. ', '')),
+    datasets: [
+      { label: 'Lolos Tahap 2', data: allProv.map(p => p.lolos), backgroundColor: '#2e9e4f' },
+      { label: 'Tidak Ditemukan', data: allProv.map(p => p.tidak), backgroundColor: '#e0554a' }
+    ]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive: true,
+    maintainAspectRatio: false,
+    scales: {
+      x: { stacked: true, beginAtZero: true, ticks: { precision: 0 } },
+      y: { stacked: true, ticks: { font: { size: 10.5 } } }
+    },
+    plugins: { legend: { position: 'top' } }
+  }
+});
+
+new gridjs.Grid({
+  columns: [
+    { name: 'Nama', width: '220px' },
+    { name: 'NPSN', width: '100px' },
+    { name: 'Sekolah' },
+    { name: 'Kab/Kota', width: '170px' },
+    { name: 'Provinsi', width: '190px' },
+    {
+      name: 'Status',
+      width: '150px',
+      formatter: (cell) => gridjs.html(
+        cell === 'Lolos'
+          ? '<span class="status-pill status-lolos">Lolos Tahap 2</span>'
+          : '<span class="status-pill status-tidak">Tidak Ditemukan</span>'
+      )
+    }
+  ],
+  data: DATA.finalis.map(f => [f.nama, f.npsn, f.sekolah, f.kabkota, f.provinsi, f.status]),
+  search: true,
+  sort: true,
+  pagination: { limit: 15 },
+  style: {
+    table: { fontSize: '13px' }
+  }
+}).render(document.getElementById('grid'));
+</script>
+
+</body>
+</html>
