@@ -219,8 +219,6 @@ function feeDetailsForChess(player){
     refund
   };
 }
-const totalEligibleRefund = eligibleChessPlayers.reduce((sum, p) =>
-  sum + (refundForChessPlayer(p) ?? 0), 0);
 const fmtRp = v => "Rp " + v.toLocaleString("id-ID");
 const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const badge = (cls, txt) => txt ? `<span class="badge ${cls}">${txt}</span>` : "&#8211;";
@@ -231,7 +229,7 @@ const foreign = P.filter(p => p.fed !== "Indonesia").length;
 const nations = new Set(P.filter(p => p.fed !== "Indonesia").map(p => p.fed)).size;
 document.getElementById("websiteStats").innerHTML = [
   ["Participants", P.length], ["Foreign players", foreign], ["Nations represented", nations],
-  ["Players with FIDE Std rating", rated], ["Estimated total refund", fmtRp(totalEligibleRefund)]
+  ["Players with FIDE Std rating", rated]
 ].map(c => `<div class="stat"><b>${c[1]}</b><span>${c[0]}</span></div>`).join("");
 document.getElementById("chessResultsStats").innerHTML = [
   ["Chess-results entries", data.chess_results.length],
